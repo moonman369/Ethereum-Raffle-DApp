@@ -1,4 +1,6 @@
 require("dotenv").config();
+require("hardhat-deploy");
+require("@nomiclabs/hardhat-waffle");
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
