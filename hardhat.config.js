@@ -12,6 +12,12 @@ module.exports = {
       chainId: 4,
       saveDeployments: true,
     },
+    goerli: {
+      url: process.env.GOERLI_RPC_URL,
+      accounts: [process.env.PRIVATE_KEY_G],
+      chainId: 5,
+      saveDeployments: true,
+    },
     w3dev: {
       url: process.env.W3DEV_RPC_URL,
       accounts: [process.env.PRIVATE_KEY_W3],

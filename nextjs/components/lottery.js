@@ -4,7 +4,7 @@ import raffleAbi from "../constants/abi.json";
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
 //          0x085d4E65D451fD35DE42c124c4C47d373b42cfA8
-const CONTRACT_ADDRESS = "0x085d4E65D451fD35DE42c124c4C47d373b42cfA8";
+const CONTRACT_ADDRESS = "0x212E13067Ea0711f368C2DB365c4eAa0D8526B20";
 
 export default function LotteryEntrance() {
   const [recentWinner, setRecentWinner] = useState("0");
