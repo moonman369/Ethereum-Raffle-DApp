@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
+import { ethers } from "ethers";
 import raffleAbi from "../constants/abi.json";
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
@@ -7,9 +8,10 @@ import raffleAbi from "../constants/abi.json";
 const CONTRACT_ADDRESS = "0xd25271cFdF593E4bc16E34118333171CFB27c801";
 
 export default function LotteryEntrance() {
-  const [recentWinner, setRecentWinner] = useState("0");
-  const [entryFee, setEntryFee] = useState("0");
-  const [playerCount, setPlayerCount] = useState(0);
+  const [recentWinner, setRecentWinner] = useState("Fetching...");
+  const [entryFee, setEntryFee] = useState("Fetching...");
+  const [playerCount, setPlayerCount] = useState("Fetching...");
+  const [raffleState, setRaffleState] = useState("Fetching...");
   const { isWeb3Enabled } = useMoralis();
 
   // Enter Lottery Button
@@ -43,25 +45,42 @@ export default function LotteryEntrance() {
     params: {},
   });
 
+  const { runContractFunction: getRaffleState } = useWeb3Contract({
+    abi: raffleAbi,
+    contractAddress: CONTRACT_ADDRESS,
+    functionName: "getRaffleState",
+    params: {},
+  });
+
   useEffect(() => {
     async function updateUi() {
       let recentWinnerFromCall = await getRecentWinner();
-      setRecentWinner(recentWinnerFromCall);
+      setRecentWinner(`  ${recentWinnerFromCall}`);
       console.log(recentWinnerFromCall);
 
       let entranceFeeFromCall = await getEntranceFee();
-      setEntryFee(parseInt(entranceFeeFromCall._hex, 16));
-      console.log(entranceFeeFromCall);
+      setEntryFee(`  ${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
+      console.log(
+        parseInt(entranceFeeFromCall._hex, 16),
+        ethers.utils.formatEther(entranceFeeFromCall)
+      );
 
       let playerCountFromCall = await getPlayerCount();
-      setPlayerCount(parseInt(playerCountFromCall._hex, 16));
+      setPlayerCount(`  ${parseInt(playerCountFromCall._hex, 16)}`);
       console.log(playerCountFromCall);
+
+      let raffleStateFromCall = await getRaffleState();
+      raffleStateFromCall == 0
+        ? setRaffleState("  Inactive")
+        : setRaffleState("  Active");
+      console.log(raffleStateFromCall);
     }
     if (isWeb3Enabled) {
       updateUi();
     }
   }, [isWeb3Enabled]);
 
+  // prettier-ignore
   return (
     <div>
       <button
@@ -74,9 +93,13 @@ export default function LotteryEntrance() {
       </button>
       <br />
       <br />
-      <div>Entry Fee: {entryFee}</div>
-      <div>Current Participation Count: {playerCount}</div>
-      <div>The Previous Winner was: {recentWinner}</div>
+      <div>Entry Fee:   {entryFee}</div>
+      <br />
+      <div>Current Participation Count:   {playerCount}</div>
+      <br />
+      <div>Raffle State:   {raffleState}</div>
+      <br />
+      <div>The Previous Winner was:   {recentWinner}</div>
     </div>
   );
 }
