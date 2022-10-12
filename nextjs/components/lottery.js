@@ -82,9 +82,9 @@ export default function LotteryEntrance() {
 
   // prettier-ignore
   return (
-    <div>
+    <div><br/>
       <button
-        className="rounded ml-auto font-bold bg-green-500"
+        className="rounded ml-auto width-50 height-10 font-bold bg-blue-500"
         onClick={async () => {
           await enterRaffle();
         }}
