@@ -1,23 +1,20 @@
-
-
-
-
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 import "hardhat/console.sol";
 
+/* Errors */
 error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
 error Raffle__TransferFailed();
 error Raffle__SendMoreToEnterRaffle();
 error Raffle__RaffleNotOpen();
 
 /**@title A sample Raffle Contract
- * @author Ayan Maiti
+ * @author Patrick Collins
  * @notice This contract is for creating a sample raffle contract
  * @dev This implements the Chainlink VRF Version 2
  */
@@ -38,9 +35,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     // Lottery Variables
     uint256 private immutable i_interval;
+    uint256 private immutable i_entranceFee;
     uint256 private s_lastTimeStamp;
     address private s_recentWinner;
-    uint256 private i_entranceFee;
     address payable[] private s_players;
     RaffleState private s_raffleState;
 

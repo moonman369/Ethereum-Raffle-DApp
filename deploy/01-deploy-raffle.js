@@ -11,7 +11,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     process.env.VRF_COO_GAS_LANE_G,
     300,
     ENTRANCE_FEE,
-    "500000",
+    "2500000",
   ];
 
   const raffle = await deploy("Raffle", {

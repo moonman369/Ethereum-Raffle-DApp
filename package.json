@@ -6,7 +6,7 @@
     "hardhat-deploy": "^0.11.15"
   },
   "dependencies": {
-    "@chainlink/contracts": "^0.4.1",
+    "@chainlink/contracts": "^0.4.2",
     "@openzeppelin/contracts": "^4.6.0",
     "dotenv": "^16.0.1",
     "hardhat": "^2.11.2",
