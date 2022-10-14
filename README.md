@@ -1,5 +1,3 @@
-# Ethereum-Raffle-DApp
-This is a simple `winner takes all` raffle lottery dapp built on an Ethereum Test Network.
 
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
@@ -33,23 +31,23 @@ This is a simple `winner takes all` raffle lottery dapp built on an Ethereum Tes
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/moonman369/Ethereum-Raffle-DApp">
+    <img src="https://raw.githubusercontent.com/othneildrew/Best-README-Template/master/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Ethereum Raffle DApp</h3>
 
   <p align="center">
-    project_description
+    This is a simple **winner takes all** raffle lottery dapp deployed on Goerli Test Network (Ethereum).
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://ethereum-raffle-dapp.vercel.app/">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/moonman369/Ethereum-Raffle-DApp/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/moonman369/Ethereum-Raffle-DApp/issues">Request Feature</a>
   </p>
 </div>
 
@@ -86,7 +84,7 @@ This is a simple `winner takes all` raffle lottery dapp built on an Ethereum Tes
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![image](https://user-images.githubusercontent.com/100613640/195911973-f1c4f1e0-6397-4673-8b28-28840bb53aa0.png)
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
