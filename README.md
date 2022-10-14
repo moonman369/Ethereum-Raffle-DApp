@@ -217,18 +217,18 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/moonman369/Ethereum-Raffle-DApp.svg?style=for-the-badge
+[contributors-url]: https://github.com/moonman369/Ethereum-Raffle-DApp/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/moonman369/Ethereum-Raffle-DApp.svg?style=for-the-badge
+[forks-url]: https://github.com/moonman369/Ethereum-Raffle-DApp/network/members
+[stars-shield]: https://img.shields.io/github/stars/moonman369/Ethereum-Raffle-DApp.svg?style=for-the-badge
+[stars-url]: https://github.com/moonman369/Ethereum-Raffle-DApp/stargazers
+[issues-shield]: https://img.shields.io/github/issues/moonman369/Ethereum-Raffle-DApp.svg?style=for-the-badge
+[issues-url]: https://github.com/moonman369/Ethereum-Raffle-DApp/issues
+[license-shield]: https://img.shields.io/github/license/moonman369/Ethereum-Raffle-DApp.svg?style=for-the-badge
+[license-url]: https://github.com/moonman369/Ethereum-Raffle-DApp/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
+[linkedin-url]: https://www.linkedin.com/in/ayan-maiti-5b4332233/
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
