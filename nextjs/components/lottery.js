@@ -12,6 +12,7 @@ export default function LotteryEntrance() {
   const [entryFee, setEntryFee] = useState("Fetching...");
   const [playerCount, setPlayerCount] = useState("Fetching...");
   const [raffleState, setRaffleState] = useState("Fetching...");
+  const [lastTimestamp, setlastTimestamp] = useState("Fetching...");
   const { isWeb3Enabled } = useMoralis();
 
   // Enter Lottery Button
@@ -52,6 +53,13 @@ export default function LotteryEntrance() {
     params: {},
   });
 
+  const { runContractFunction: getLastTimestamp } = useWeb3Contract({
+    abi: raffleAbi,
+    contractAddress: CONTRACT_ADDRESS,
+    functionName: "getLastTimeStamp",
+    params: {},
+  });
+
   useEffect(() => {
     async function updateUi() {
       let recentWinnerFromCall = await getRecentWinner();
@@ -59,14 +67,14 @@ export default function LotteryEntrance() {
       console.log(recentWinnerFromCall);
 
       let entranceFeeFromCall = await getEntranceFee();
-      setEntryFee(`  ${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
+      setEntryFee(`${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
       console.log(
         parseInt(entranceFeeFromCall._hex, 16),
         ethers.utils.formatEther(entranceFeeFromCall)
       );
 
       let playerCountFromCall = await getPlayerCount();
-      setPlayerCount(`  ${parseInt(playerCountFromCall._hex, 16)}`);
+      setPlayerCount(parseInt(playerCountFromCall._hex, 16));
       console.log(playerCountFromCall);
 
       let raffleStateFromCall = await getRaffleState();
@@ -74,6 +82,36 @@ export default function LotteryEntrance() {
         ? setRaffleState("  Inactive")
         : setRaffleState("  Active");
       console.log(raffleStateFromCall);
+
+      let lastTimstampFromCall = await getLastTimestamp();
+      const unixTimestamp = parseInt(lastTimstampFromCall._hex, 16);
+      const monthsArr = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const date = new Date(unixTimestamp * 1000);
+      const dd = date.getDate();
+      const mmm = monthsArr[date.getMonth()];
+      const yyyy = date.getFullYear();
+      const h = date.getHours();
+      const m = date.getMinutes();
+      const s = date.getSeconds();
+      setlastTimestamp(
+        `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
+          m
+        ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`
+      );
+      console.log(lastTimstampFromCall);
     }
     if (isWeb3Enabled) {
       updateUi();
@@ -93,13 +131,14 @@ export default function LotteryEntrance() {
       </button>
       <br />
       <br />
-      <div>Entry Fee:   {entryFee}</div>
+      <div>Entry Fee: {entryFee}</div>
       <br />
-      <div>Current Participation Count:   {playerCount}</div>
+      <div>Current Participation Count: {playerCount}</div>
       <br />
-      <div>Raffle State:   {raffleState}</div>
+      <div>Raffle State: {raffleState}</div>
       <br />
-      <div>The Previous Winner was:   {recentWinner}</div>
+      <div>Most Recent Winner: {recentWinner}</div><br/>
+      <div>Last Win Timestamp: {lastTimestamp}</div>
     </div>
   );
 }
