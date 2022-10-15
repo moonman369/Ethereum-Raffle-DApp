@@ -116,10 +116,39 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
+
+* Node
+  ```sh
+  node v16.x.x
+  ```
 * npm
   ```sh
   npm install npm@latest -g
   ```
+  
+  
+<!-- * hardhat
+  ```sh
+  npm install -D hardhat
+  ```
+  
+  
+* dotenv
+  ```sh
+  npm install -D dotenv
+  ```
+ 
+* openzeppelin/contracts
+  ```sh
+  npm install -D @openzeppelin/contracts
+  ```
+  
+  
+* chainlink/contracts
+  ```sh
+  npm install -D @chainlink/contracts
+  ``` -->
+  
 
 ### Installation
 
