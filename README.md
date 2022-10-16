@@ -94,14 +94,14 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
+* [![Ethereum][Ethereum.org]][Ethereum-url]
+* [![Chainlink][Chainlink.org]][Chainlink-url]
+* [![Solidity][Solidity.org]][Solidity-url]
+* [![Hardhat][Hardhat.org]][Hardhat-url]
+* [![Ethers][Ethers.js]][Ethers-url]
 * [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+<!-- * [![Angular][Angular.io]][Angular-url] -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -116,17 +116,46 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
+
+* Node
+  ```sh
+  node v16.x.x
+  ```
 * npm
   ```sh
   npm install npm@latest -g
   ```
+  
+  
+<!-- * hardhat
+  ```sh
+  npm install -D hardhat
+  ```
+  
+  
+* dotenv
+  ```sh
+  npm install -D dotenv
+  ```
+ 
+* openzeppelin/contracts
+  ```sh
+  npm install -D @openzeppelin/contracts
+  ```
+  
+  
+* chainlink/contracts
+  ```sh
+  npm install -D @chainlink/contracts
+  ``` -->
+  
 
 ### Installation
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone -b main https://github.com/moonman369/Ethereum-Raffle-DApp.git
    ```
 3. Install NPM packages
    ```sh
@@ -198,7 +227,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/moonman369/Ethereum-Raffle-DApp](https://github.com/moonman369/Ethereum-Raffle-DApp)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -234,15 +263,15 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[Ethers.js]: https://img.shields.io/badge/Ethers.js-00047F?style=for-the-badge&logo=ethersdotjs&logoColor=4FC08D
+[Ethers-url]: https://docs.ethers.io/v5/
+<!-- [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/ -->
+[Chainlink.org]: https://img.shields.io/badge/Chainlink-4A4A55?style=for-the-badge&logo=chainlink&logoColor=0B4EE0
+[Chainlink-url]: https://chain.link/
+[Ethereum.org]: https://img.shields.io/badge/Ethereum-2DC39C?style=for-the-badge&logo=ethereum&logoColor=D9E029
+[Ethereum-url]: https://ethereum.org/en/
+[Hardhat.org]: https://img.shields.io/badge/Hardhat-D8E00B?style=for-the-badge&logo=hardhat&logoColor=white
+[Hardhat-url]: https://hardhat.org/
+[Solidity.org]: https://img.shields.io/badge/Solidity-563D7C?style=for-the-badge&logo=solidity&logoColor=black
+[Solidity-url]: https://docs.soliditylang.org/en/v0.8.17/ 
