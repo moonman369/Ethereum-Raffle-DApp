@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ethers } from "ethers";
 import raffleAbi from "../constants/abi.json";
+import styles from "../pages/index";
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
 //          0x085d4E65D451fD35DE42c124c4C47d373b42cfA8
-const CONTRACT_ADDRESS = "0xd25271cFdF593E4bc16E34118333171CFB27c801";
+// goerli: 0xd25271cFdF593E4bc16E34118333171CFB27c801
+const CONTRACT_ADDRESS = "0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0";
 
 export default function LotteryEntrance() {
   const [recentWinner, setRecentWinner] = useState("Fetching...");
@@ -135,6 +137,7 @@ export default function LotteryEntrance() {
       <br />
       <div>Entry Fee: {entryFee}</div>
       <br />
+      {/* <div>Contract Address: <a className={styles.link} href="https://goerli.etherscan.io/address/0x530c3072935ceff646c0e9db5b0c5e4fff2183f0" target="_blank" rel="noopener noreferrer" color="blue">0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0</a></div> */}
       <div>Current Participation Count: {playerCount}</div>
       <br />
       <div>Raffle State: {raffleState}</div>

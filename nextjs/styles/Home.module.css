@@ -1,5 +1,11 @@
 .container {
   padding: 0 2rem;
+  color: #c3d0d3;
+  background-color: #0a0a0a;
+}
+
+.header {
+  color: #7efaca;
 }
 
 .main {
@@ -10,6 +16,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #0a0a0a;
 }
 
 .footer {
@@ -43,6 +50,10 @@
   margin: 0;
   line-height: 1.15;
   font-size: 4rem;
+}
+
+.link {
+  color: #2237f1;
 }
 
 .title,
