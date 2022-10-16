@@ -79,8 +79,8 @@ export default function LotteryEntrance() {
 
       let raffleStateFromCall = await getRaffleState();
       raffleStateFromCall == 0
-        ? setRaffleState("  Inactive")
-        : setRaffleState("  Active");
+        ? setRaffleState("  Open")
+        : setRaffleState("  Closed");
       console.log(raffleStateFromCall);
 
       let lastTimstampFromCall = await getLastTimestamp();
@@ -124,7 +124,9 @@ export default function LotteryEntrance() {
       <button
         className="rounded ml-auto width-50 height-10 font-bold bg-blue-500"
         onClick={async () => {
-          await enterRaffle();
+          await enterRaffle().catch((error) => {
+            console.log(error.message)
+          });
         }}
       >
         Enter Raffle
