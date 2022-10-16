@@ -9,12 +9,41 @@ import styles from "../pages/index";
 // goerli: 0xd25271cFdF593E4bc16E34118333171CFB27c801
 const CONTRACT_ADDRESS = "0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0";
 
+function unixToDateTime(unixTimestamp) {
+  const monthsArr = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const date = new Date(unixTimestamp * 1000);
+  const dd = date.getDate();
+  const mmm = monthsArr[date.getMonth()];
+  const yyyy = date.getFullYear();
+  const h = date.getHours();
+  const m = date.getMinutes();
+  const s = date.getSeconds();
+  return `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
+    m
+  ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`;
+}
+``;
+
 export default function LotteryEntrance() {
   const [recentWinner, setRecentWinner] = useState("Fetching...");
   const [entryFee, setEntryFee] = useState("Fetching...");
   const [playerCount, setPlayerCount] = useState("Fetching...");
   const [raffleState, setRaffleState] = useState("Fetching...");
-  const [lastTimestamp, setlastTimestamp] = useState("Fetching...");
+  const [lastTimestamp, setLastTimestamp] = useState("Fetching...");
+  const [startTimestamp, setStartTimestamp] = useState("Fetching...");
   const { isWeb3Enabled } = useMoralis();
 
   // Enter Lottery Button
@@ -62,6 +91,13 @@ export default function LotteryEntrance() {
     params: {},
   });
 
+  const { runContractFunction: getStartTimestamp } = useWeb3Contract({
+    abi: raffleAbi,
+    contractAddress: CONTRACT_ADDRESS,
+    functionName: "getRaffleStartTimestamp",
+    params: {},
+  });
+
   useEffect(() => {
     async function updateUi() {
       let recentWinnerFromCall = await getRecentWinner();
@@ -86,34 +122,41 @@ export default function LotteryEntrance() {
       console.log(raffleStateFromCall);
 
       let lastTimstampFromCall = await getLastTimestamp();
-      const unixTimestamp = parseInt(lastTimstampFromCall._hex, 16);
-      const monthsArr = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      const date = new Date(unixTimestamp * 1000);
-      const dd = date.getDate();
-      const mmm = monthsArr[date.getMonth()];
-      const yyyy = date.getFullYear();
-      const h = date.getHours();
-      const m = date.getMinutes();
-      const s = date.getSeconds();
-      setlastTimestamp(
-        `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
-          m
-        ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`
-      );
-      console.log(lastTimstampFromCall);
+      const unixTimestamp1 = parseInt(lastTimstampFromCall._hex, 16);
+      setLastTimestamp(unixToDateTime(unixTimestamp1));
+
+      let startTimestampFromCall = await getStartTimestamp();
+      const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
+      setStartTimestamp(unixToDateTime(unixTimestamp2));
+
+      //   const monthsArr = [
+      //     "Jan",
+      //     "Feb",
+      //     "Mar",
+      //     "Apr",
+      //     "May",
+      //     "Jun",
+      //     "Jul",
+      //     "Aug",
+      //     "Sep",
+      //     "Oct",
+      //     "Nov",
+      //     "Dec",
+      //   ];
+      //   const date = new Date(unixTimestamp * 1000);
+      //   const dd = date.getDate();
+      //   const mmm = monthsArr[date.getMonth()];
+      //   const yyyy = date.getFullYear();
+      //   const h = date.getHours();
+      //   const m = date.getMinutes();
+      //   const s = date.getSeconds();
+      //   setlastTimestamp(
+      //     `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
+      //       m
+      //     ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`
+      //   );
+      //   console.log(lastTimstampFromCall);
+      // }
     }
     if (isWeb3Enabled) {
       updateUi();
@@ -142,6 +185,8 @@ export default function LotteryEntrance() {
       <br />
       <div>Raffle State: {raffleState}</div>
       <br />
+      <div>Current Raffle Start Timestamp: {startTimestamp}</div>
+      <br/>
       <div>Most Recent Winner: {recentWinner}</div><br/>
       <div>Last Win Timestamp: {lastTimestamp}</div>
     </div>

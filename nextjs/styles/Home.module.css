@@ -6,6 +6,7 @@
 
 .header {
   color: #7efaca;
+  text-shadow: 1px 3px 8px #a1d9ff;
 }
 
 .main {
@@ -53,7 +54,7 @@
 }
 
 .link {
-  color: #2237f1;
+  color: #1e964c;
 }
 
 .title,
