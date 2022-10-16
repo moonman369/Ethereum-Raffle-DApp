@@ -37,6 +37,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     uint256 private immutable i_interval;
     uint256 private immutable i_entranceFee;
     uint256 private s_lastTimeStamp;
+    uint256 private s_startTimestamp;
     address private s_recentWinner;
     address payable[] private s_players;
     RaffleState private s_raffleState;
@@ -75,6 +76,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
             revert Raffle__RaffleNotOpen();
         }
         s_players.push(payable(msg.sender));
+        if (s_players.length == 1) {
+            s_startTimestamp = block.timestamp;
+        }
         // Emit an event when we update a dynamic array or mapping
         // Named events with the function name reversed
         emit RaffleEnter(msg.sender);
@@ -101,7 +105,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         )
     {
         bool isOpen = RaffleState.OPEN == s_raffleState;
-        bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
+        bool timePassed = ((block.timestamp - s_startTimestamp) > i_interval);
         bool hasPlayers = s_players.length > 0;
         bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers);
@@ -196,6 +200,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     function getEntranceFee() public view returns (uint256) {
         return i_entranceFee;
+    }
+
+    function getRaffleStartTimestamp() public view returns (uint256) {
+        return s_startTimestamp;
     }
 
     function getNumberOfPlayers() public view returns (uint256) {
