@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Header from "../components/header";
+import { ConnectButton } from "web3uikit";
 import LotteryEntrance from "../components/lottery";
 import { useMoralis } from "react-moralis";
 
@@ -10,10 +11,16 @@ export default function Home() {
   const { isWeb3Enabled } = useMoralis();
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Header />
-      </div>
-      <div>
+      <nav className="p-5 border-b-2 flex flex-row">
+        <div className={styles.header}>
+          <Header />
+        </div>
+        <div className="ml-auto py-2 px-4">
+          <ConnectButton moraLisAuth={false} />
+        </div>
+        <br />
+      </nav>
+      <div className="ml-auto">
         Contract Address: &nbsp;
         <a
           className={styles.link}

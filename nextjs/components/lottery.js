@@ -126,6 +126,7 @@ export default function LotteryEntrance() {
       setLastTimestamp(unixToDateTime(unixTimestamp1));
 
       let startTimestampFromCall = await getStartTimestamp();
+      console.log(startTimestampFromCall);
       const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
       setStartTimestamp(unixToDateTime(unixTimestamp2));
 
