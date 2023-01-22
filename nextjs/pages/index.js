@@ -1,8 +1,8 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import Header from "../components/header";
+import Header from "../components/header/Header";
 import { ConnectButton } from "web3uikit";
-import LotteryEntrance from "../components/lottery";
+import LotteryEntrance from "../components/lottery/Lottery";
 import { useMoralis } from "react-moralis";
 
 // export { styles };

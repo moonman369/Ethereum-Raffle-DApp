@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ethers } from "ethers";
-import raffleAbi from "../constants/abi.json";
-import styles from "../pages/index";
+import raffleAbi from "../../constants/abi.json";
+import styles from '../../styles/Home.module.css';
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
 //          0x085d4E65D451fD35DE42c124c4C47d373b42cfA8
@@ -168,7 +168,7 @@ export default function LotteryEntrance() {
   return (
     <div><br/>
       <button
-        className="rounded ml-auto width-50 height-10 font-bold bg-blue-500"
+        className={styles.enter__btn}
         onClick={async () => {
           await enterRaffle().catch((error) => {
             console.log(error.message)
@@ -179,17 +179,19 @@ export default function LotteryEntrance() {
       </button>
       <br />
       <br />
-      <div>Entry Fee: {entryFee}</div>
+      <div className={styles.content__box}>
+      <div>Entry Fee: <span className={styles.spl__text}>{entryFee}</span></div>
       <br />
       {/* <div>Contract Address: <a className={styles.link} href="https://goerli.etherscan.io/address/0x530c3072935ceff646c0e9db5b0c5e4fff2183f0" target="_blank" rel="noopener noreferrer" color="blue">0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0</a></div> */}
-      <div>Current Participation Count: {playerCount}</div>
+      <div>Current Participation Count: <span className={styles.spl__text}>{playerCount}</span></div>
       <br />
-      <div>Raffle State: {raffleState}</div>
+      <div>Raffle State: <span className={styles.spl__text}>{raffleState}</span></div>
       <br />
-      <div>Current Raffle Start Timestamp: {startTimestamp}</div>
+      <div>Current Raffle Start Timestamp: <span className={styles.spl__text}>{startTimestamp}</span></div>
       <br/>
-      <div>Most Recent Winner: {recentWinner}</div><br/>
-      <div>Last Win Timestamp: {lastTimestamp}</div>
+      <div>Most Recent Winner: <span className={styles.spl__text}>{recentWinner}</span></div><br/>
+      <div>Last Win Timestamp: <span className={styles.spl__text}>{lastTimestamp}</span></div>
+      </div>
     </div>
   );
 }

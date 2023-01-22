@@ -1,12 +1,36 @@
 .container {
   padding: 0 2rem;
   color: #c3d0d3;
-  background-color: #0a0a0a;
+  background-color: #1d1c1c;
+  padding-bottom: 2rem;
 }
 
 .header {
   color: #7efaca;
   text-shadow: 1px 1.7px 6px #a1d9ff;
+}
+
+.enter__btn {
+  padding: 20px;
+    background-color: #f8da51;
+    border-radius: 20px;
+    border: 1px solid #000;
+    color: #1a1919;
+    font-weight: 700;
+    font-size: large;
+    transition: all .45s ease;
+}
+
+.content__box {
+  border: 2px solid #f8da51;
+  border-radius: 1.rem;
+  padding: 1rem;
+  width: 75%;
+}
+
+.enter__btn:hover {
+  background-color: #f7f2e0;
+  border : #1e964c 2px solid;
 }
 
 .main {
@@ -55,6 +79,7 @@
 
 .link {
   color: #1e964c;
+  font-weight: 500;
 }
 
 .title,
@@ -66,6 +91,11 @@
   margin: 4rem 0;
   line-height: 1.5;
   font-size: 1.5rem;
+}
+
+.spl__text {
+  color: #40e2a4;
+  font-weight: 500;
 }
 
 .code {
@@ -120,9 +150,8 @@
   margin-left: 0.5rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
+@media screen and (max-width: 800px) {
+  .content__box {
     width: 100%;
-    flex-direction: column;
   }
 }
