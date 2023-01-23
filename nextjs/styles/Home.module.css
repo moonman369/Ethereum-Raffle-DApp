@@ -2,19 +2,30 @@
   padding: 0 2rem;
   color: #c3d0d3;
   background-color: #1d1c1c;
+  
   padding-bottom: 2rem;
 }
 
+/* body {
+ 
+} */
+
 .header {
-  color: #7efaca;
-  text-shadow: 1px 1.7px 6px #a1d9ff;
+  color: #f0c759;
+  text-shadow: 1px 1.7px 10px #ebb67a;
+}
+
+.main__body {
+  background-image: url(https://imgs.search.brave.com/RsV7V6kLUCrZHSclswRROe5Q9itPGFVGAcHah0MiMqc/rs:fit:800:532:1/g:ce/aHR0cHM6Ly90aHVt/YnMuZHJlYW1zdGlt/ZS5jb20vYi9waWxl/LXJlZC10aWNrZXRz/LWhvcml6b250YWwt/MjEyNDUyNS5qcGc);
+  border-radius: 2rem;
+  padding: 3rem;
 }
 
 .enter__btn {
   padding: 20px;
-    background-color: #f8da51;
+    background-color: #f8b551;
     border-radius: 20px;
-    border: 1px solid #000;
+    border: 3px solid rgb(0, 0, 0);
     color: #1a1919;
     font-weight: 700;
     font-size: large;
@@ -22,15 +33,22 @@
 }
 
 .content__box {
-  border: 2px solid #f8da51;
+  border: 3px solid #f8b551;
   border-radius: 1.5rem;
   padding: 1rem;
   width: 75%;
+  background-color: #353333;
+  transition: all .45s ease;
+}
+
+.content__box:hover {
+  background-color: #000;
 }
 
 .enter__btn:hover {
-  background-color: #f7f2e0;
-  border : #1e964c 2px solid;
+  color: #f8b551;
+  background-color: #1d1c1c;
+  border : #f8b551 3px solid;
 }
 
 .main {
@@ -78,7 +96,7 @@
 }
 
 .link {
-  color: #1e964c;
+  color: #e2457a;
   font-weight: 500;
 }
 
@@ -94,7 +112,7 @@
 }
 
 .spl__text {
-  color: #40e2a4;
+  color: #f3e77e;
   font-weight: 500;
 }
 

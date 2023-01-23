@@ -166,7 +166,7 @@ export default function LotteryEntrance() {
 
   // prettier-ignore
   return (
-    <div><br/>
+    <div className={styles.main__body}><br/>
       <button
         className={styles.enter__btn}
         onClick={async () => {
