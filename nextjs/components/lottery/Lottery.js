@@ -114,7 +114,7 @@ export default function LotteryEntrance() {
     async function updateUi() {
       
       let recentWinnerFromCall = await getRecentWinner();
-      setRecentWinner(`  ${recentWinnerFromCall}`);
+      setRecentWinner(recentWinnerFromCall);
       mediaHandler(recentWinnerFromCall)
 
       let entranceFeeFromCall = await getEntranceFee();
