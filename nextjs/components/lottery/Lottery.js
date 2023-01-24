@@ -67,7 +67,7 @@ export default function LotteryEntrance() {
   });
 
   const mediaHandler = (val) => {
-    if (window.innerWidth < 999) {
+    if (window.innerWidth < 795) {
       setRecentWinnerDisp(`${val?.slice(0,23)}...`)
     }
     else {
