@@ -31,7 +31,6 @@ export default function Home() {
           href="https://goerli.etherscan.io/address/0x530c3072935ceff646c0e9db5b0c5e4fff2183f0"
           target="_blank"
           rel="noopener noreferrer"
-          color="blue"
         >
           0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0
         </a>

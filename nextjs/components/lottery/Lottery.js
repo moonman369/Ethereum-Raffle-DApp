@@ -38,13 +38,16 @@ function unixToDateTime(unixTimestamp) {
 ``;
 
 export default function LotteryEntrance() {
-  const [recentWinner, setRecentWinner] = useState("Fetching...");
+  const [recentWinner, setRecentWinner] = useState("");
+  const [recentWinnerDisp, setRecentWinnerDisp] = useState('Fetching...')
   const [entryFee, setEntryFee] = useState("Fetching...");
   const [playerCount, setPlayerCount] = useState("Fetching...");
   const [raffleState, setRaffleState] = useState("Fetching...");
   const [lastTimestamp, setLastTimestamp] = useState("Fetching...");
   const [startTimestamp, setStartTimestamp] = useState("Fetching...");
   const { isWeb3Enabled } = useMoralis();
+
+  
 
   // Enter Lottery Button
   const { runContractFunction: enterRaffle } = useWeb3Contract({
@@ -62,6 +65,15 @@ export default function LotteryEntrance() {
     functionName: "getRecentWinner",
     params: {},
   });
+
+  const mediaHandler = (val) => {
+    if (window.innerWidth < 999) {
+      setRecentWinnerDisp(`${val?.slice(0,23)}...`)
+    }
+    else {
+      setRecentWinnerDisp(val)
+    }
+  }
 
   const { runContractFunction: getEntranceFee } = useWeb3Contract({
     abi: raffleAbi,
@@ -100,9 +112,10 @@ export default function LotteryEntrance() {
 
   useEffect(() => {
     async function updateUi() {
+      
       let recentWinnerFromCall = await getRecentWinner();
       setRecentWinner(`  ${recentWinnerFromCall}`);
-      console.log(recentWinnerFromCall);
+      mediaHandler(recentWinnerFromCall)
 
       let entranceFeeFromCall = await getEntranceFee();
       setEntryFee(`${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
@@ -129,6 +142,7 @@ export default function LotteryEntrance() {
       console.log(startTimestampFromCall);
       const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
       setStartTimestamp(unixToDateTime(unixTimestamp2));
+
 
       //   const monthsArr = [
       //     "Jan",
@@ -164,6 +178,11 @@ export default function LotteryEntrance() {
     }
   }, [isWeb3Enabled]);
 
+
+  window.addEventListener('resize', () => {
+    mediaHandler(recentWinner)
+  })
+
   // prettier-ignore
   return (
     <div className={styles.main__body}><br/>
@@ -179,6 +198,7 @@ export default function LotteryEntrance() {
       </button>
       <br />
       <br />
+      <div className={styles.info__section}>
       <div className={styles.content__box}>
       <div>Entry Fee: <span className={styles.spl__text}>{entryFee}</span></div>
       <br />
@@ -189,8 +209,17 @@ export default function LotteryEntrance() {
       <br />
       <div>Current Raffle Start Timestamp: <span className={styles.spl__text}>{startTimestamp}</span></div>
       <br/>
-      <div>Most Recent Winner: <span className={styles.spl__text}>{recentWinner}</span></div><br/>
+      <div>Most Recent Winner: <span className={styles.spl__text}><a
+          className={styles.link}
+          href={`https://goerli.etherscan.io/address/${recentWinner}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >{recentWinnerDisp}</a></span></div><br/>
       <div>Last Win Timestamp: <span className={styles.spl__text}>{lastTimestamp}</span></div>
+      </div>
+      <div className={styles.content__box}>
+
+      </div>
       </div>
     </div>
   );

@@ -18,7 +18,14 @@
 .main__body {
   background-image: url(https://imgs.search.brave.com/RsV7V6kLUCrZHSclswRROe5Q9itPGFVGAcHah0MiMqc/rs:fit:800:532:1/g:ce/aHR0cHM6Ly90aHVt/YnMuZHJlYW1zdGlt/ZS5jb20vYi9waWxl/LXJlZC10aWNrZXRz/LWhvcml6b250YWwt/MjEyNDUyNS5qcGc);
   border-radius: 2rem;
-  padding: 3rem;
+  padding: 1.5rem;
+}
+
+.info__section {
+  display: grid;
+  grid-template-columns: 65% 35%;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .enter__btn {
@@ -37,7 +44,7 @@
   border-radius: 1.5rem;
   padding: 1rem;
   width: 75%;
-  background-color: #353333;
+  background-color: #2c2b2be3;
   transition: all .45s ease;
 }
 
@@ -168,8 +175,15 @@
   margin-left: 0.5rem;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 750px) {
   .content__box {
     width: 100%;
+  }
+
+  .info__section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 1rem;
   }
 }
