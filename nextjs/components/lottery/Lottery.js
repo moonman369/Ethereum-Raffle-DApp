@@ -35,7 +35,6 @@ function unixToDateTime(unixTimestamp) {
     m
   ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`;
 }
-``;
 
 export default function LotteryEntrance() {
   const [recentWinner, setRecentWinner] = useState("");
@@ -45,7 +44,10 @@ export default function LotteryEntrance() {
   const [raffleState, setRaffleState] = useState("Fetching...");
   const [lastTimestamp, setLastTimestamp] = useState("Fetching...");
   const [startTimestamp, setStartTimestamp] = useState("Fetching...");
+  const [unixStartTimestamp, setUnixStartTimestamp] = useState(0)
+  const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
+  const [status, setStatus] = useState('Fetching...')
 
   
 
@@ -110,104 +112,93 @@ export default function LotteryEntrance() {
     params: {},
   });
 
-  useEffect(() => {
-    async function updateUi() {
+  async function updateUi() {
       
-      let recentWinnerFromCall = await getRecentWinner();
-      setRecentWinner(recentWinnerFromCall);
-      mediaHandler(recentWinnerFromCall)
+    let recentWinnerFromCall = await getRecentWinner();
+    setRecentWinner(recentWinnerFromCall);
+    mediaHandler(recentWinnerFromCall)
 
-      let entranceFeeFromCall = await getEntranceFee();
-      setEntryFee(`${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
-      console.log(
-        parseInt(entranceFeeFromCall._hex, 16),
-        ethers.utils.formatEther(entranceFeeFromCall)
-      );
+    let entranceFeeFromCall = await getEntranceFee();
+    setEntryFee(`${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
+    console.log(
+      parseInt(entranceFeeFromCall._hex, 16),
+      ethers.utils.formatEther(entranceFeeFromCall)
+    );
 
-      let playerCountFromCall = await getPlayerCount();
-      setPlayerCount(parseInt(playerCountFromCall._hex, 16));
-      console.log(playerCountFromCall);
+    let playerCountFromCall = await getPlayerCount();
+    setPlayerCount(parseInt(playerCountFromCall._hex, 16));
+    console.log(playerCountFromCall);
 
-      let raffleStateFromCall = await getRaffleState();
-      raffleStateFromCall == 0
-        ? setRaffleState("  Open")
-        : setRaffleState("  Closed");
-      console.log(raffleStateFromCall);
+    let raffleStateFromCall = await getRaffleState();
+    raffleStateFromCall == 0
+      ? setRaffleState("Open")
+      : setRaffleState("Closed");
+    console.log(raffleStateFromCall);
 
-      let lastTimstampFromCall = await getLastTimestamp();
-      const unixTimestamp1 = parseInt(lastTimstampFromCall._hex, 16);
-      setLastTimestamp(unixToDateTime(unixTimestamp1));
+    let lastTimstampFromCall = await getLastTimestamp();
+    const unixTimestamp1 = parseInt(lastTimstampFromCall._hex, 16);
+    setLastTimestamp(unixToDateTime(unixTimestamp1));
 
-      let startTimestampFromCall = await getStartTimestamp();
-      console.log(startTimestampFromCall);
-      const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
-      setStartTimestamp(unixToDateTime(unixTimestamp2));
+    let startTimestampFromCall = await getStartTimestamp();
+    console.log(startTimestampFromCall);
+    const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
+    setUnixStartTimestamp(unixTimestamp2)
+    setStartTimestamp(unixToDateTime(unixTimestamp2));
+  }
 
-
-      //   const monthsArr = [
-      //     "Jan",
-      //     "Feb",
-      //     "Mar",
-      //     "Apr",
-      //     "May",
-      //     "Jun",
-      //     "Jul",
-      //     "Aug",
-      //     "Sep",
-      //     "Oct",
-      //     "Nov",
-      //     "Dec",
-      //   ];
-      //   const date = new Date(unixTimestamp * 1000);
-      //   const dd = date.getDate();
-      //   const mmm = monthsArr[date.getMonth()];
-      //   const yyyy = date.getFullYear();
-      //   const h = date.getHours();
-      //   const m = date.getMinutes();
-      //   const s = date.getSeconds();
-      //   setlastTimestamp(
-      //     `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
-      //       m
-      //     ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`
-      //   );
-      //   console.log(lastTimstampFromCall);
-      // }
-    }
+  useEffect(() => {
     if (isWeb3Enabled) {
       updateUi();
     }
   }, [isWeb3Enabled]);
 
 
+  useEffect(() => {
+    console.log(unixStartTimestamp + 300 * 1000)
+    if (Date.now() < unixStartTimestamp + 300 * 1000 && timeLeft > 0) {
+      setTimeout(() => {}, 1000)
+      getRaffleState().then((state) => {
+        state == 0 
+        ? setRaffleState('Open')
+        : setRaffleState('Closed')
+      })
+      setTimeLeft(timeLeft - 1)
+      console.log('in')
+    }
+    console.log('out')
+  }, [playerCount, timeLeft])
+
+
   window.addEventListener('resize', () => {
     mediaHandler(recentWinner)
   })
 
+  const handleEnterRaffle = async () => {
+    try {
+      const tx = await enterRaffle();
+      const res = await tx.wait()
+      console.log(res)
+      await updateUi();
+    } catch (error) {
+      console.log(error.message) 
+    }
+  }
+
   // prettier-ignore
   return (
     <div className={styles.main__body}><br/>
-      <button
-        className={styles.enter__btn}
-        onClick={async () => {
-          await enterRaffle().catch((error) => {
-            console.log(error.message)
-          });
-        }}
-      >
-        Enter Raffle
-      </button>
       <br />
       <br />
       <div className={styles.info__section}>
       <div className={styles.content__box}>
-      <div>Entry Fee: <span className={styles.spl__text}>{entryFee}</span></div>
+      <div>Raffle Entry Fee: <span className={styles.spl__text}>{entryFee}</span></div>
       <br />
       {/* <div>Contract Address: <a className={styles.link} href="https://goerli.etherscan.io/address/0x530c3072935ceff646c0e9db5b0c5e4fff2183f0" target="_blank" rel="noopener noreferrer" color="blue">0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0</a></div> */}
       <div>Current Participation Count: <span className={styles.spl__text}>{playerCount}</span></div>
       <br />
       <div>Raffle State: <span className={styles.spl__text}>{raffleState}</span></div>
       <br />
-      <div>Current Raffle Start Timestamp: <span className={styles.spl__text}>{startTimestamp}</span></div>
+      <div>Most Recent Raffle Starting Time: <span className={styles.spl__text}>{startTimestamp}</span></div>
       <br/>
       <div>Most Recent Winner: <span className={styles.spl__text}><a
           className={styles.link}
@@ -215,10 +206,15 @@ export default function LotteryEntrance() {
           target="_blank"
           rel="noopener noreferrer"
         >{recentWinnerDisp}</a></span></div><br/>
-      <div>Last Win Timestamp: <span className={styles.spl__text}>{lastTimestamp}</span></div>
+      <div>Most Recent Win Time: <span className={styles.spl__text}>{lastTimestamp}</span></div>
       </div>
       <div className={styles.content__box}>
-
+      <button
+        className={styles.enter__btn}
+        onClick={handleEnterRaffle}
+      >
+        Enter Raffle
+      </button>
       </div>
       </div>
     </div>
