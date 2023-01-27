@@ -45,7 +45,7 @@ export default function LotteryEntrance() {
   const [lastTimestamp, setLastTimestamp] = useState("Fetching...");
   const [startTimestamp, setStartTimestamp] = useState("Fetching...");
   const [unixStartTimestamp, setUnixStartTimestamp] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(300)
+  // const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
   const [msg, setMsg] = useState('')
 
@@ -157,20 +157,20 @@ export default function LotteryEntrance() {
   }, [isWeb3Enabled]);
 
 
-  useEffect(() => {
-    console.log(unixStartTimestamp + 300 * 1000)
-    if (Date.now() < unixStartTimestamp + 300 * 1000 && timeLeft > 0) {
-      setTimeout(() => {}, 1000)
-      getRaffleState().then((state) => {
-        state == 0 
-        ? setRaffleState('Open')
-        : setRaffleState('Closed')
-      })
-      setTimeLeft(timeLeft - 1)
-      console.log('in')
-    }
-    console.log('out')
-  }, [playerCount, timeLeft])
+  // useEffect(() => {
+  //   console.log(unixStartTimestamp + 300 * 1000)
+  //   if (Date.now() < unixStartTimestamp + 300 * 1000 && timeLeft > 0) {
+  //     setTimeout(() => {}, 1000)
+  //     getRaffleState().then((state) => {
+  //       state == 0 
+  //       ? setRaffleState('Open')
+  //       : setRaffleState('Closed')
+  //     })
+  //     setTimeLeft(timeLeft - 1)
+  //     console.log('in')
+  //   }
+  //   console.log('out')
+  // }, [playerCount, timeLeft])
 
 
   window.addEventListener('resize', () => {
@@ -179,14 +179,30 @@ export default function LotteryEntrance() {
 
   const handleEnterRaffle = async () => {
     try {
-      const tx = await enterRaffle();
+      if (await getRaffleState() == 0) {
+        console.log(Math.floor(Date.now() / 1000), parseInt((await getStartTimestamp())._hex, 16))
+        const tx = await enterRaffle();
       const res = await tx.wait()
-      console.log(res)
       await updateUi();
+      let timeElapsed = (Math.floor(Date.now() / 1000) - parseInt((await getStartTimestamp())._hex, 16))
+      console.log(timeElapsed)
+      setMsg(`Successfully entered raffle!!! Raffle will remain open for ${300 - timeElapsed} seconds.`)
+      // for(let i=45; i>=0; i--) {
+      //   setTimeout(async() => {}, 1000)
+      // }
+      // setMsg('You can enter now!!')
+      }
+      else {
+        setMsg('Raffle is no longer open. Calculating results.')
+        await updateUi()
+        return 
+      }
     } catch (error) {
       console.log(error.message) 
+      setMsg('Could not enter raffle successfully. Please try again.')
+      return
     }
-
+    
 
   }
 
