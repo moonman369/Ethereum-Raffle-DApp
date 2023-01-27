@@ -47,7 +47,7 @@ export default function LotteryEntrance() {
   const [unixStartTimestamp, setUnixStartTimestamp] = useState(0)
   const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
-  const [status, setStatus] = useState('Fetching...')
+  const [msg, setMsg] = useState('')
 
   
 
@@ -113,6 +113,10 @@ export default function LotteryEntrance() {
   });
 
   async function updateUi() {
+
+    // console.log(ethereum.selectedAddress)
+    let account = ethereum.selectedAddress
+    setMsg(`Hello ${account.slice(0,9)}...${account.slice(account.length-9, account.length-1)}. Welcome to Ethereum Raffle.`)
       
     let recentWinnerFromCall = await getRecentWinner();
     setRecentWinner(recentWinnerFromCall);
@@ -182,6 +186,8 @@ export default function LotteryEntrance() {
     } catch (error) {
       console.log(error.message) 
     }
+
+
   }
 
   // prettier-ignore
@@ -209,6 +215,7 @@ export default function LotteryEntrance() {
       <div>Most Recent Win Time: <span className={styles.spl__text}>{lastTimestamp}</span></div>
       </div>
       <div className={styles.content__box}>
+      <p>{msg}</p>
       <button
         className={styles.enter__btn}
         onClick={handleEnterRaffle}
