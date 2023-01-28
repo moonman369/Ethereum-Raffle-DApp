@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMoralis, useWeb3Contract } from "react-moralis";
 import { ethers } from "ethers";
 import raffleAbi from "../../constants/abi.json";
@@ -48,6 +48,7 @@ export default function LotteryEntrance() {
   // const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
   const [msg, setMsg] = useState('')
+  const enterBtn = useRef(null)
 
   
 
@@ -117,6 +118,8 @@ export default function LotteryEntrance() {
     // console.log(ethereum.selectedAddress)
     let account = ethereum.selectedAddress
     setMsg(`Hello ${account.slice(0,9)}...${account.slice(account.length-9, account.length-1)}. Welcome to Ethereum Raffle.`)
+
+    console.log(enterBtn.current.disabled)
       
     let recentWinnerFromCall = await getRecentWinner();
     setRecentWinner(recentWinnerFromCall);
@@ -137,6 +140,9 @@ export default function LotteryEntrance() {
     raffleStateFromCall == 0
       ? setRaffleState("Open")
       : setRaffleState("Closed");
+      if (raffleStateFromCall != 0) {
+        enterBtn.current.disabled = true
+      }
     console.log(raffleStateFromCall);
 
     let lastTimstampFromCall = await getLastTimestamp();
@@ -233,6 +239,7 @@ export default function LotteryEntrance() {
       <div className={styles.content__box}>
       <p>{msg}</p>
       <button
+       ref={enterBtn}
         className={styles.enter__btn}
         onClick={handleEnterRaffle}
       >
