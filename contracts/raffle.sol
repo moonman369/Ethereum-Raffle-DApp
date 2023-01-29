@@ -36,8 +36,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     uint32 private constant NUM_WORDS = 1;
 
     // Lottery Variables
-    uint256 private i_interval;
     uint256 private immutable i_entranceFee;
+    uint256 private s_interval;
     uint256 private s_lastTimeStamp;
     uint256 private s_startTimestamp;
     address private s_recentWinner;
@@ -61,7 +61,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
-        // i_interval = interval;
+        // s_interval = interval;
         i_subscriptionId = subscriptionId;
         i_entranceFee = entranceFee;
         s_raffleState = RaffleState.OPEN;
@@ -71,8 +71,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
 
     function startRaffle(uint256 timeLimit) external onlyOwner {
         s_raffleState = RaffleState.OPEN;
-        i_interval = timeLimit;
-        emit RaffleStarted(i_interval);
+        s_interval = timeLimit;
+        emit RaffleStarted(s_interval);
         s_startTimestamp = block.timestamp;
     }
 
@@ -115,7 +115,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         )
     {
         bool isOpen = RaffleState.OPEN == s_raffleState;
-        bool timePassed = ((block.timestamp - s_startTimestamp) > i_interval);
+        bool timePassed = ((block.timestamp - s_startTimestamp) > s_interval);
         bool hasPlayers = s_players.length > 0;
         bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers);
@@ -170,6 +170,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         s_players = new address payable[](0);
         s_raffleState = RaffleState.CLOSED;
         s_lastTimeStamp = block.timestamp;
+        s_interval = 0;
         uint256 winAmount = getRaffleBalance();
         (bool success, ) = recentWinner.call{value: winAmount}("");
         // require(success, "Transfer failed");
@@ -210,7 +211,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     }
 
     function getInterval() public view returns (uint256) {
-        return i_interval;
+        return s_interval;
     }
 
     function getEntranceFee() public view returns (uint256) {
