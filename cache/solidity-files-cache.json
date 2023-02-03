@@ -259,8 +259,8 @@
       ]
     },
     "E:\\Git\\Ethereum-Raffle-DApp\\contracts\\raffle.sol": {
-      "lastModificationDate": 1674996159023,
-      "contentHash": "080a789e7ddb67e9eed611d30f6fc5c6",
+      "lastModificationDate": 1675146319356,
+      "contentHash": "0557bb9a7f40b229901a15c4f8508bd8",
       "sourceName": "contracts/raffle.sol",
       "solcConfig": {
         "version": "0.8.7",
