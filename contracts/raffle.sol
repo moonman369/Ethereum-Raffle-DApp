@@ -72,8 +72,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     function startRaffle(uint256 timeLimit) external onlyOwner {
         s_raffleState = RaffleState.OPEN;
         s_interval = timeLimit;
-        emit RaffleStarted(s_interval);
         s_startTimestamp = block.timestamp;
+        emit RaffleStarted(s_interval);
     }
 
     function enterRaffle() public payable {
