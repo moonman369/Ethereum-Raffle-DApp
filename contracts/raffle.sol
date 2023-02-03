@@ -130,8 +130,12 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         bytes calldata /* performData */
     ) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
+        bool timePassed = ((block.timestamp - s_startTimestamp) > s_interval);
         // require(upkeepNeeded, "Upkeep not needed");
         if (!upkeepNeeded) {
+            if (timePassed) {
+                s_raffleState = RaffleState.CLOSED;
+            }
             revert Raffle__UpkeepNotNeeded(
                 address(this).balance,
                 s_players.length,
