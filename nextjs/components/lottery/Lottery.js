@@ -1,28 +1,29 @@
-import { useState, useEffect } from "react";
-import { useMoralis, useWeb3Contract } from "react-moralis";
-import { ethers } from "ethers";
-import raffleAbi from "../../constants/abi.json";
+import { useState, useEffect } from 'react';
+import { useMoralis, useWeb3Contract } from 'react-moralis';
+import { ethers } from 'ethers';
+import raffleAbi from '../../constants/abi.json';
 import styles from '../../styles/Home.module.css';
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
 //          0x085d4E65D451fD35DE42c124c4C47d373b42cfA8
 // goerli: 0xd25271cFdF593E4bc16E34118333171CFB27c801
-const CONTRACT_ADDRESS = "0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0";
+//         0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0
+const CONTRACT_ADDRESS = '0x100319831aEb9BcA62A3A037CCcC945eB6480B75';
 
 function unixToDateTime(unixTimestamp) {
   const monthsArr = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   const date = new Date(unixTimestamp * 1000);
   const dd = date.getDate();
@@ -31,32 +32,30 @@ function unixToDateTime(unixTimestamp) {
   const h = date.getHours();
   const m = date.getMinutes();
   const s = date.getSeconds();
-  return `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, "0")}:${String(
+  return `${dd}-${mmm}-${yyyy}, ${String(h).padStart(2, '0')}:${String(
     m
-  ).padStart(2, "0")}:${String(s).padStart(2, "0")} UTC +5:30`;
+  ).padStart(2, '0')}:${String(s).padStart(2, '0')} UTC +5:30`;
 }
 
 export default function LotteryEntrance() {
-  const [recentWinner, setRecentWinner] = useState("");
-  const [recentWinnerDisp, setRecentWinnerDisp] = useState('Fetching...')
-  const [entryFee, setEntryFee] = useState("Fetching...");
-  const [playerCount, setPlayerCount] = useState("Fetching...");
-  const [raffleState, setRaffleState] = useState("Fetching...");
-  const [lastTimestamp, setLastTimestamp] = useState("Fetching...");
-  const [startTimestamp, setStartTimestamp] = useState("Fetching...");
-  const [unixStartTimestamp, setUnixStartTimestamp] = useState(0)
+  const [recentWinner, setRecentWinner] = useState('');
+  const [recentWinnerDisp, setRecentWinnerDisp] = useState('Fetching...');
+  const [entryFee, setEntryFee] = useState('Fetching...');
+  const [playerCount, setPlayerCount] = useState('Fetching...');
+  const [raffleState, setRaffleState] = useState('Fetching...');
+  const [lastTimestamp, setLastTimestamp] = useState('Fetching...');
+  const [startTimestamp, setStartTimestamp] = useState('Fetching...');
+  const [unixStartTimestamp, setUnixStartTimestamp] = useState(0);
   // const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
-  const [msg, setMsg] = useState('')
-
-  
+  const [msg, setMsg] = useState('');
 
   // Enter Lottery Button
   const { runContractFunction: enterRaffle } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "enterRaffle",
-    msgValue: "10000000000000000",
+    functionName: 'enterRaffle',
+    msgValue: '10000000000000000',
     params: {},
   });
 
@@ -64,63 +63,66 @@ export default function LotteryEntrance() {
   const { runContractFunction: getRecentWinner } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getRecentWinner",
+    functionName: 'getRecentWinner',
     params: {},
   });
 
   const mediaHandler = (val) => {
     if (window.innerWidth < 795) {
-      setRecentWinnerDisp(`${val?.slice(0,23)}...`)
+      setRecentWinnerDisp(`${val?.slice(0, 23)}...`);
+    } else {
+      setRecentWinnerDisp(val);
     }
-    else {
-      setRecentWinnerDisp(val)
-    }
-  }
+  };
 
   const { runContractFunction: getEntranceFee } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getEntranceFee",
+    functionName: 'getEntranceFee',
     params: {},
   });
 
   const { runContractFunction: getPlayerCount } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getNumberOfPlayers",
+    functionName: 'getNumberOfPlayers',
     params: {},
   });
 
   const { runContractFunction: getRaffleState } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getRaffleState",
+    functionName: 'getRaffleState',
     params: {},
   });
 
   const { runContractFunction: getLastTimestamp } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getLastTimeStamp",
+    functionName: 'getLastTimeStamp',
     params: {},
   });
 
   const { runContractFunction: getStartTimestamp } = useWeb3Contract({
     abi: raffleAbi,
     contractAddress: CONTRACT_ADDRESS,
-    functionName: "getRaffleStartTimestamp",
+    functionName: 'getRaffleStartTimestamp',
     params: {},
   });
 
   async function updateUi() {
-
     // console.log(ethereum.selectedAddress)
-    let account = ethereum.selectedAddress
-    setMsg(`Hello ${account.slice(0,9)}...${account.slice(account.length-9, account.length-1)}. Welcome to Ethereum Raffle.`)
-      
+    let account = ethereum.selectedAddress;
+    setMsg(
+      `Hello ${account.slice(0, 9)}...${account.slice(
+        account.length - 9,
+        account.length - 1
+      )}. Welcome to Ethereum Raffle.`
+    );
+
     let recentWinnerFromCall = await getRecentWinner();
     setRecentWinner(recentWinnerFromCall);
-    mediaHandler(recentWinnerFromCall)
+    mediaHandler(recentWinnerFromCall);
 
     let entranceFeeFromCall = await getEntranceFee();
     setEntryFee(`${ethers.utils.formatEther(entranceFeeFromCall)} ETH`);
@@ -134,9 +136,9 @@ export default function LotteryEntrance() {
     console.log(playerCountFromCall);
 
     let raffleStateFromCall = await getRaffleState();
-    raffleStateFromCall == 0
-      ? setRaffleState("Open")
-      : setRaffleState("Closed");
+    raffleStateFromCall == 1
+      ? setRaffleState('Open')
+      : setRaffleState('Closed');
     console.log(raffleStateFromCall);
 
     let lastTimstampFromCall = await getLastTimestamp();
@@ -146,7 +148,7 @@ export default function LotteryEntrance() {
     let startTimestampFromCall = await getStartTimestamp();
     console.log(startTimestampFromCall);
     const unixTimestamp2 = parseInt(startTimestampFromCall._hex, 16);
-    setUnixStartTimestamp(unixTimestamp2)
+    setUnixStartTimestamp(unixTimestamp2);
     setStartTimestamp(unixToDateTime(unixTimestamp2));
   }
 
@@ -156,13 +158,12 @@ export default function LotteryEntrance() {
     }
   }, [isWeb3Enabled]);
 
-
   // useEffect(() => {
   //   console.log(unixStartTimestamp + 300 * 1000)
   //   if (Date.now() < unixStartTimestamp + 300 * 1000 && timeLeft > 0) {
   //     setTimeout(() => {}, 1000)
   //     getRaffleState().then((state) => {
-  //       state == 0 
+  //       state == 0
   //       ? setRaffleState('Open')
   //       : setRaffleState('Closed')
   //     })
@@ -172,39 +173,44 @@ export default function LotteryEntrance() {
   //   console.log('out')
   // }, [playerCount, timeLeft])
 
-
   window.addEventListener('resize', () => {
-    mediaHandler(recentWinner)
-  })
+    mediaHandler(recentWinner);
+  });
 
   const handleEnterRaffle = async () => {
     try {
-      if (await getRaffleState() == 0) {
-        console.log(Math.floor(Date.now() / 1000), parseInt((await getStartTimestamp())._hex, 16))
+      if ((await getRaffleState()) == 1) {
+        console.log(
+          Math.floor(Date.now() / 1000),
+          parseInt((await getStartTimestamp())._hex, 16)
+        );
         const tx = await enterRaffle();
-      const res = await tx.wait()
-      await updateUi();
-      let timeElapsed = (Math.floor(Date.now() / 1000) - parseInt((await getStartTimestamp())._hex, 16))
-      console.log(timeElapsed)
-      setMsg(`Successfully entered raffle!!! Raffle will remain open for ${300 - timeElapsed} seconds.`)
-      // for(let i=45; i>=0; i--) {
-      //   setTimeout(async() => {}, 1000)
-      // }
-      // setMsg('You can enter now!!')
-      }
-      else {
-        setMsg('Raffle is no longer open. Calculating results.')
-        await updateUi()
-        return 
+        const res = await tx.wait();
+        await updateUi();
+        let timeElapsed =
+          Math.floor(Date.now() / 1000) -
+          parseInt((await getStartTimestamp())._hex, 16);
+        console.log(timeElapsed);
+        setMsg(
+          `Successfully entered raffle!!! Raffle will remain open for ${
+            300 - timeElapsed
+          } seconds.`
+        );
+        // for(let i=45; i>=0; i--) {
+        //   setTimeout(async() => {}, 1000)
+        // }
+        // setMsg('You can enter now!!')
+      } else {
+        setMsg('Raffle is no longer open. Calculating results.');
+        await updateUi();
+        return;
       }
     } catch (error) {
-      console.log(error.message) 
-      setMsg('Could not enter raffle successfully. Please try again.')
-      return
+      console.log(error.message);
+      setMsg('Could not enter raffle successfully. Please try again.');
+      return;
     }
-    
-
-  }
+  };
 
   // prettier-ignore
   return (
