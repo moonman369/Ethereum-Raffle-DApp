@@ -24,7 +24,8 @@ const startRaffle = async (duration) => {
     await tx.wait()
 
 
-    await raffle.connect(owner).enterRaffle({value: ethers.utils.parseEther('0.01')})
+    const tx2 = await raffle.connect(owner).enterRaffle({value: ethers.utils.parseEther('0.01')})
+    await tx2.wait()
 
     console.log(await raffle.getRaffleState());
 
@@ -36,11 +37,11 @@ const getRaffleState = async () => {
 }
 
 const main = async () => {
-    await getRaffleState();
+    const tx1 = await getRaffleState();
     
-    await startRaffle();
+    const tx2 = await startRaffle();
 
-    await sleep(20000);
+    const tx3 = sleep(15000);
 
     await getRaffleState();
 }
