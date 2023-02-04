@@ -85,6 +85,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         if (s_raffleState != RaffleState.OPEN) {
             revert Raffle__RaffleNotOpen();
         }
+        if ((block.timestamp - s_startTimestamp) > s_interval) {
+            s_raffleState = RaffleState.CLOSED;
+            revert Raffle__RaffleNotOpen();
+        }
         s_players.push(payable(msg.sender));
         // if (s_players.length == 1) {
         //     s_startTimestamp = block.timestamp;
