@@ -13,6 +13,7 @@ error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint25
 error Raffle__TransferFailed();
 error Raffle__SendMoreToEnterRaffle();
 error Raffle__RaffleNotOpen();
+error Raffle__RaffleInProgress();
 
 /**@title A sample Raffle Contract
  * @author Patrick Collins
@@ -70,6 +71,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     }
 
     function startRaffle(uint256 timeLimit) external onlyOwner {
+        if (s_raffleState == RaffleState.OPEN) {
+            revert Raffle__RaffleInProgress();
+        }
         s_raffleState = RaffleState.OPEN;
         s_interval = timeLimit;
         s_startTimestamp = block.timestamp;
