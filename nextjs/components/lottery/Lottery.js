@@ -8,7 +8,7 @@ import styles from '../../styles/Home.module.css';
 //          0x085d4E65D451fD35DE42c124c4C47d373b42cfA8
 // goerli: 0xd25271cFdF593E4bc16E34118333171CFB27c801
 //         0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0
-const CONTRACT_ADDRESS = '0x100319831aEb9BcA62A3A037CCcC945eB6480B75';
+const CONTRACT_ADDRESS = '0xeD5F7D3B8bDe22c8dCcAcEF86ADBc25948BEa4e7';
 
 function unixToDateTime(unixTimestamp) {
   const monthsArr = [

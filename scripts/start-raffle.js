@@ -3,9 +3,9 @@ const prompt = require('prompt');
 require('dotenv').config();
 const { abi } = require('../artifacts/contracts/raffle.sol/Raffle.json');
 
-const rpcUrl = process.env.GOERLI_RPC_URL;
-const raffleV2Address = process.env.RAFFLE_V2_ADDRESS_FINAL;
-const ownerPvtKey = process.env.PRIVATE_KEY_G;
+const rpcUrl = process.env.SEPOLIA_RPC_URL;
+const raffleV2Address = process.env.RAFFLE_V2_ADDRESS_S;
+const ownerPvtKey = process.env.PRIVATE_KEY_S;
 const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 const raffle = new ethers.Contract(raffleV2Address, abi, provider);
 

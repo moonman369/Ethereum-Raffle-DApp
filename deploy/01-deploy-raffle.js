@@ -9,7 +9,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     process.env.VRF_COO_S,
     process.env.SUB_ID_S,
     process.env.VRF_COO_GAS_LANE_S,
-    300,
     ENTRANCE_FEE,
     '2500000',
   ];
