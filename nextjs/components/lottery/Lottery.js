@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useMoralis, useWeb3Contract } from 'react-moralis';
-import { ethers } from 'ethers';
-import raffleAbi from '../../constants/abi.json';
+
+import { useState, useEffect, useRef } from "react";
+import { useMoralis, useWeb3Contract } from "react-moralis";
+import { ethers } from "ethers";
+import raffleAbi from "../../constants/abi.json";
 import styles from '../../styles/Home.module.css';
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
@@ -48,7 +49,11 @@ export default function LotteryEntrance() {
   const [unixStartTimestamp, setUnixStartTimestamp] = useState(0);
   // const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
-  const [msg, setMsg] = useState('');
+
+  const [msg, setMsg] = useState('')
+  const enterBtn = useRef(null)
+
+  
 
   // Enter Lottery Button
   const { runContractFunction: enterRaffle } = useWeb3Contract({
@@ -112,14 +117,12 @@ export default function LotteryEntrance() {
 
   async function updateUi() {
     // console.log(ethereum.selectedAddress)
-    let account = ethereum.selectedAddress;
-    setMsg(
-      `Hello ${account.slice(0, 9)}...${account.slice(
-        account.length - 9,
-        account.length - 1
-      )}. Welcome to Ethereum Raffle.`
-    );
 
+    let account = ethereum.selectedAddress
+    setMsg(`Hello ${account.slice(0,9)}...${account.slice(account.length-9, account.length-1)}. Welcome to Ethereum Raffle.`)
+
+    console.log(enterBtn.current.disabled)
+      
     let recentWinnerFromCall = await getRecentWinner();
     setRecentWinner(recentWinnerFromCall);
     mediaHandler(recentWinnerFromCall);
@@ -136,9 +139,13 @@ export default function LotteryEntrance() {
     console.log(playerCountFromCall);
 
     let raffleStateFromCall = await getRaffleState();
-    raffleStateFromCall == 1
-      ? setRaffleState('Open')
-      : setRaffleState('Closed');
+
+    raffleStateFromCall == 0
+      ? setRaffleState("Open")
+      : setRaffleState("Closed");
+      if (raffleStateFromCall != 0) {
+        enterBtn.current.disabled = true
+      }
     console.log(raffleStateFromCall);
 
     let lastTimstampFromCall = await getLastTimestamp();
@@ -239,6 +246,7 @@ export default function LotteryEntrance() {
       <div className={styles.content__box}>
       <p>{msg}</p>
       <button
+       ref={enterBtn}
         className={styles.enter__btn}
         onClick={handleEnterRaffle}
       >
