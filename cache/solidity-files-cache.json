@@ -259,8 +259,8 @@
       ]
     },
     "E:\\Git\\Ethereum-Raffle-DApp\\contracts\\raffle.sol": {
-      "lastModificationDate": 1675420759514,
-      "contentHash": "f357a80af1dcaf8aff89847b004e4dd1",
+      "lastModificationDate": 1680714287809,
+      "contentHash": "02c066c35844250863b7c93618a83783",
       "sourceName": "contracts/raffle.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -296,7 +296,6 @@
         "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol",
         "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol",
         "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
         "hardhat/console.sol"
       ],
       "versionPragmas": [

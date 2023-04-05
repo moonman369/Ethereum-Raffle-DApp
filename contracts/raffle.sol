@@ -5,7 +5,6 @@ pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
 /* Errors */
@@ -13,17 +12,15 @@ error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint25
 error Raffle__TransferFailed();
 error Raffle__SendMoreToEnterRaffle();
 error Raffle__RaffleNotOpen();
-error Raffle__RaffleInProgress();
 
 /**@title A sample Raffle Contract
  * @author Patrick Collins
  * @notice This contract is for creating a sample raffle contract
  * @dev This implements the Chainlink VRF Version 2
  */
-contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
+contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     /* Type declarations */
     enum RaffleState {
-        CLOSED,
         OPEN,
         CALCULATING
     }
@@ -37,8 +34,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     uint32 private constant NUM_WORDS = 1;
 
     // Lottery Variables
+    uint256 private immutable i_interval;
     uint256 private immutable i_entranceFee;
-    uint256 private s_interval;
     uint256 private s_lastTimeStamp;
     uint256 private s_startTimestamp;
     address private s_recentWinner;
@@ -47,37 +44,26 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
 
     /* Events */
     event RequestedRaffleWinner(uint256 indexed requestId);
-    event RaffleStarted(uint256 indexed timeLimit);
     event RaffleEnter(address indexed player);
-    event WinnerPickedAndRaffleClosed(address indexed player, uint256 winAmount);
+    event WinnerPicked(address indexed player);
 
     /* Functions */
     constructor(
         address vrfCoordinatorV2,
         uint64 subscriptionId,
         bytes32 gasLane, // keyHash
-        // uint256 interval,
+        uint256 interval,
         uint256 entranceFee,
         uint32 callbackGasLimit
     ) VRFConsumerBaseV2(vrfCoordinatorV2) {
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorV2);
         i_gasLane = gasLane;
-        // s_interval = interval;
+        i_interval = interval;
         i_subscriptionId = subscriptionId;
         i_entranceFee = entranceFee;
         s_raffleState = RaffleState.OPEN;
         s_lastTimeStamp = block.timestamp;
         i_callbackGasLimit = callbackGasLimit;
-    }
-
-    function startRaffle(uint256 timeLimit) external onlyOwner {
-        if (s_raffleState == RaffleState.OPEN) {
-            revert Raffle__RaffleInProgress();
-        }
-        s_raffleState = RaffleState.OPEN;
-        s_interval = timeLimit;
-        s_startTimestamp = block.timestamp;
-        emit RaffleStarted(s_interval);
     }
 
     function enterRaffle() public payable {
@@ -89,14 +75,10 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         if (s_raffleState != RaffleState.OPEN) {
             revert Raffle__RaffleNotOpen();
         }
-        if ((block.timestamp - s_startTimestamp) > s_interval) {
-            s_raffleState = RaffleState.CLOSED;
-            revert Raffle__RaffleNotOpen();
-        }
         s_players.push(payable(msg.sender));
-        // if (s_players.length == 1) {
-        //     s_startTimestamp = block.timestamp;
-        // }
+        if (s_players.length == 1) {
+            s_startTimestamp = block.timestamp;
+        }
         // Emit an event when we update a dynamic array or mapping
         // Named events with the function name reversed
         emit RaffleEnter(msg.sender);
@@ -123,7 +105,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         )
     {
         bool isOpen = RaffleState.OPEN == s_raffleState;
-        bool timePassed = ((block.timestamp - s_startTimestamp) > s_interval);
+        bool timePassed = ((block.timestamp - s_startTimestamp) > i_interval);
         bool hasPlayers = s_players.length > 0;
         bool hasBalance = address(this).balance > 0;
         upkeepNeeded = (timePassed && isOpen && hasBalance && hasPlayers);
@@ -138,12 +120,8 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         bytes calldata /* performData */
     ) external override {
         (bool upkeepNeeded, ) = checkUpkeep("");
-        bool timePassed = ((block.timestamp - s_startTimestamp) > s_interval);
         // require(upkeepNeeded, "Upkeep not needed");
         if (!upkeepNeeded) {
-            if (timePassed) {
-                s_raffleState = RaffleState.CLOSED;
-            }
             revert Raffle__UpkeepNotNeeded(
                 address(this).balance,
                 s_players.length,
@@ -180,23 +158,17 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
         s_players = new address payable[](0);
-        s_raffleState = RaffleState.CLOSED;
+        s_raffleState = RaffleState.OPEN;
         s_lastTimeStamp = block.timestamp;
-        s_interval = 0;
-        uint256 winAmount = getRaffleBalance();
-        (bool success, ) = recentWinner.call{value: winAmount}("");
+        (bool success, ) = recentWinner.call{value: address(this).balance}("");
         // require(success, "Transfer failed");
         if (!success) {
             revert Raffle__TransferFailed();
         }
-        emit WinnerPickedAndRaffleClosed(recentWinner, winAmount);
+        emit WinnerPicked(recentWinner);
     }
 
     /** Getter Functions */
-
-    function getRaffleBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
 
     function getRaffleState() public view returns (RaffleState) {
         return s_raffleState;
@@ -223,7 +195,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface, Ownable {
     }
 
     function getInterval() public view returns (uint256) {
-        return s_interval;
+        return i_interval;
     }
 
     function getEntranceFee() public view returns (uint256) {
