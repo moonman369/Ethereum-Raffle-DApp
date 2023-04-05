@@ -112,6 +112,10 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
+RaffleV2 is here: 
+Final release: 0x100319831aEb9BcA62A3A037CCcC945eB6480B75
+
+0xCd25B82A66F9Db033Ef03E1cFc7132f8cC3590b3
 
 ### Prerequisites
 

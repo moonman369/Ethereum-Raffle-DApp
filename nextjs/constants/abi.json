@@ -18,11 +18,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "interval",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "entranceFee",
         "type": "uint256"
       },
@@ -93,11 +88,43 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "player",
         "type": "address"
       }
     ],
     "name": "RaffleEnter",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "timeLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "RaffleStarted",
     "type": "event"
   },
   {
@@ -121,9 +148,15 @@
         "internalType": "address",
         "name": "player",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "winAmount",
+        "type": "uint256"
       }
     ],
-    "name": "WinnerPicked",
+    "name": "WinnerPickedAndRaffleClosed",
     "type": "event"
   },
   {
@@ -243,6 +276,19 @@
   },
   {
     "inputs": [],
+    "name": "getRaffleBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getRaffleStartTimestamp",
     "outputs": [
       {
@@ -294,6 +340,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes",
@@ -320,6 +379,39 @@
       }
     ],
     "name": "rawFulfillRandomWords",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "timeLimit",
+        "type": "uint256"
+      }
+    ],
+    "name": "startRaffle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
