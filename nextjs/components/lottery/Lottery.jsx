@@ -1,8 +1,7 @@
-
-import { useState, useEffect, useRef } from "react";
-import { useMoralis, useWeb3Contract } from "react-moralis";
-import { ethers } from "ethers";
-import raffleAbi from "../../constants/abi.json";
+import { useState, useEffect, useRef } from 'react';
+import { useMoralis, useWeb3Contract } from 'react-moralis';
+import { ethers } from 'ethers';
+import raffleAbi from '../../constants/abi.json';
 import styles from '../../styles/Home.module.css';
 
 // rinkeby: 0x0296Ab7e0AF274e81964275257e0E63025640299
@@ -10,6 +9,8 @@ import styles from '../../styles/Home.module.css';
 // goerli: 0xd25271cFdF593E4bc16E34118333171CFB27c801
 //         0x530c3072935cefF646c0E9Db5B0C5E4FFF2183f0
 const CONTRACT_ADDRESS = '0xeD5F7D3B8bDe22c8dCcAcEF86ADBc25948BEa4e7';
+
+const SEPOLIA_TESTNET_CHAIN_ID = 11155111;
 
 function unixToDateTime(unixTimestamp) {
   const monthsArr = [
@@ -50,10 +51,55 @@ export default function LotteryEntrance() {
   // const [timeLeft, setTimeLeft] = useState(300)
   const { isWeb3Enabled } = useMoralis();
 
-  const [msg, setMsg] = useState('')
-  const enterBtn = useRef(null)
+  const [msg, setMsg] = useState('');
+  const enterBtn = useRef(null);
 
-  
+  const switchToSepolia = async () => {
+    try {
+      await window?.ethereum?.request({
+        method: 'wallet_switchEthereumChain',
+        params: [
+          {
+            chainId: `0x${SEPOLIA_TESTNET_CHAIN_ID.toString(16)}`,
+          },
+        ],
+      });
+    } catch (switchError) {
+      if (switchError.code === 4902) {
+        try {
+          await window?.ethereum?.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: `0x${SEPOLIA_TESTNET_CHAIN_ID.toString(16)}`,
+                chainName: 'Sepolia Testnet',
+                nativeCurrency: {
+                  name: 'Ether',
+                  symbol: 'ETH',
+                  decimals: 18,
+                },
+                rpcUrls: [
+                  'https://ethereum-sepolia.blockpi.network/v1/rpc/public',
+                ],
+                blockExplorerUrls: ['https://sepolia.etherscan.io/'],
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error(addError);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(`0x${SEPOLIA_TESTNET_CHAIN_ID.toString(16)}`);
+    if (
+      window?.ethereum?.chainId !== `0x${SEPOLIA_TESTNET_CHAIN_ID.toString(16)}`
+    ) {
+      switchToSepolia();
+    }
+  }, [window?.ethereum?.chainId]);
 
   // Enter Lottery Button
   const { runContractFunction: enterRaffle } = useWeb3Contract({
@@ -118,11 +164,16 @@ export default function LotteryEntrance() {
   async function updateUi() {
     // console.log(ethereum.selectedAddress)
 
-    let account = ethereum.selectedAddress
-    setMsg(`Hello ${account.slice(0,9)}...${account.slice(account.length-9, account.length-1)}. Welcome to Ethereum Raffle.`)
+    let account = ethereum.selectedAddress;
+    setMsg(
+      `Hello ${account.slice(0, 9)}...${account.slice(
+        account.length - 9,
+        account.length - 1
+      )}. Welcome to Ethereum Raffle.`
+    );
 
-    console.log(enterBtn.current.disabled)
-      
+    console.log(enterBtn.current.disabled);
+
     let recentWinnerFromCall = await getRecentWinner();
     setRecentWinner(recentWinnerFromCall);
     mediaHandler(recentWinnerFromCall);
@@ -141,11 +192,11 @@ export default function LotteryEntrance() {
     let raffleStateFromCall = await getRaffleState();
 
     raffleStateFromCall == 0
-      ? setRaffleState("Open")
-      : setRaffleState("Closed");
-      if (raffleStateFromCall != 0) {
-        enterBtn.current.disabled = true
-      }
+      ? setRaffleState('Open')
+      : setRaffleState('Closed');
+    if (raffleStateFromCall != 0) {
+      enterBtn.current.disabled = true;
+    }
     console.log(raffleStateFromCall);
 
     let lastTimstampFromCall = await getLastTimestamp();
@@ -160,10 +211,13 @@ export default function LotteryEntrance() {
   }
 
   useEffect(() => {
-    if (isWeb3Enabled) {
+    if (
+      isWeb3Enabled &&
+      window?.ethereum?.chainId === `0x${SEPOLIA_TESTNET_CHAIN_ID.toString(16)}`
+    ) {
       updateUi();
     }
-  }, [isWeb3Enabled]);
+  }, [isWeb3Enabled, window?.ethereum?.chainId]);
 
   // useEffect(() => {
   //   console.log(unixStartTimestamp + 300 * 1000)
